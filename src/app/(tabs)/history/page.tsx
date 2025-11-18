@@ -1,9 +1,11 @@
 'use client';
 
 import HistoryList from '@/components/history/HistoryList';
+import FlowGuideBanner from '@/components/common/FlowGuideBanner';
 import { historySummary } from '@/lib/mock/historySummary';
 import { historyLogs } from '@/lib/mock/historyLogs';
 import { useLanguage } from '@/hooks/useLanguage';
+import { getGuidance } from '@/lib/i18n/guidance';
 
 const messages = {
   ko: {
@@ -35,6 +37,8 @@ const messages = {
 export default function HistoryPage() {
   const { language } = useLanguage();
   const t = messages[language];
+  const guidance = getGuidance('history', language);
+
   return (
     <div className="px-4 py-6">
       <header className="mb-6">
@@ -42,8 +46,14 @@ export default function HistoryPage() {
         <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.subtitle}</p>
       </header>
 
+      <FlowGuideBanner
+        title={guidance.title}
+        body={guidance.body}
+        variant="info"
+      />
+
       {/* Weekly summary */}
-      <div className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 rounded-xl shadow-sm p-6 mb-6 border border-blue-100 dark:border-blue-800">
+      <div className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 rounded-xl shadow-sm p-6 mb-6 mt-6 border border-blue-100 dark:border-blue-800">
         <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-4">{t.weeklySummaryHeading}</h2>
         <p className="text-xs text-slate-600 dark:text-slate-400 mb-4">{historySummary.weekRange}</p>
 

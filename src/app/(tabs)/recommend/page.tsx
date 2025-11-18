@@ -3,9 +3,11 @@
 import { useState, useMemo } from 'react';
 import FilterSection from '@/components/recommend/FilterSection';
 import RecommendationList from '@/components/recommend/RecommendationList';
+import FlowGuideBanner from '@/components/common/FlowGuideBanner';
 import { recommendations } from '@/lib/mock/recommendations';
 import type { Recommendation } from '@/types';
 import { useLanguage } from '@/hooks/useLanguage';
+import { getGuidance } from '@/lib/i18n/guidance';
 
 const messages = {
   ko: {
@@ -23,6 +25,7 @@ const messages = {
 export default function RecommendPage() {
   const { language } = useLanguage();
   const t = messages[language];
+  const guidance = getGuidance('recommend', language);
   const [filters, setFilters] = useState({
     budget: 7000,
     time: 10,
@@ -51,7 +54,15 @@ export default function RecommendPage() {
         <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.subtitle}</p>
       </header>
 
-      <FilterSection onFilterChange={setFilters} />
+      <FlowGuideBanner
+        title={guidance.title}
+        body={guidance.body}
+        variant="tip"
+      />
+
+      <div className="mt-6">
+        <FilterSection onFilterChange={setFilters} />
+      </div>
 
       <div className="mb-4">
         <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-3">

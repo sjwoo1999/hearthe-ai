@@ -1,6 +1,8 @@
 'use client';
 
 import { useLanguage } from '@/hooks/useLanguage';
+import { getGuidance } from '@/lib/i18n/guidance';
+import FlowGuideBanner from '@/components/common/FlowGuideBanner';
 
 interface CameraPreviewProps {
   onCapture: () => void;
@@ -23,8 +25,17 @@ const messages = {
 export default function CameraPreview({ onCapture, onGallery }: CameraPreviewProps) {
   const { language } = useLanguage();
   const t = messages[language];
+  const guidance = getGuidance('scanIdle', language);
+
   return (
     <div className="space-y-4">
+      {/* Flow guidance */}
+      <FlowGuideBanner
+        title={guidance.title}
+        body={guidance.body}
+        variant="tip"
+      />
+
       {/* Camera placeholder */}
       <div className="w-full aspect-square bg-slate-200 dark:bg-slate-700 rounded-xl flex items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-600">
         <div className="text-center">

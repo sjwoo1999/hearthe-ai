@@ -5,6 +5,8 @@ import ComparisonCard from './ComparisonCard';
 import { useLanguage } from '@/hooks/useLanguage';
 import { getFoodName } from '@/lib/i18n/foodNames';
 import { getSuggestion, getImpact } from '@/lib/i18n/suggestions';
+import { getGuidance } from '@/lib/i18n/guidance';
+import FlowGuideBanner from '@/components/common/FlowGuideBanner';
 
 interface ResultViewProps {
   result: ScanResult;
@@ -40,9 +42,17 @@ const messages = {
 export default function ResultView({ result }: ResultViewProps) {
   const { language } = useLanguage();
   const t = messages[language];
+  const guidance = getGuidance('scanResult', language);
 
   return (
     <div className="space-y-4">
+      {/* Flow guidance */}
+      <FlowGuideBanner
+        title={guidance.title}
+        body={guidance.body}
+        variant="info"
+      />
+
       {/* Image thumbnail */}
       <div className="w-full aspect-video bg-slate-200 dark:bg-slate-700 rounded-xl flex items-center justify-center">
         <div className="text-center">
