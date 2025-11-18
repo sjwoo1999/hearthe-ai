@@ -27,11 +27,11 @@ export default function QuickActions() {
         </button>
 
         <button
-          onClick={() => router.push('/recommend')}
+          onClick={() => router.push('/history')}
           className="w-full bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg p-4 flex items-center gap-3 transition-colors"
         >
           <span className="text-2xl">⏱</span>
-          <span className="text-sm font-medium text-amber-900">시간 적을 때 빠른 식사</span>
+          <span className="text-sm font-medium text-amber-900">최근 식사 기록 보기</span>
         </button>
       </div>
     </div>

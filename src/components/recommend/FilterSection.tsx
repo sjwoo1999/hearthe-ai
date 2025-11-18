@@ -15,6 +15,22 @@ export default function FilterSection({ onFilterChange }: FilterSectionProps) {
   const [time, setTime] = useState(10);
   const [noCook, setNoCook] = useState(false);
 
+  const handleBudgetChange = (value: number) => {
+    setBudget(value);
+    onFilterChange?.({ budget: value, time, noCook });
+  };
+
+  const handleTimeChange = (value: number) => {
+    setTime(value);
+    onFilterChange?.({ budget, time: value, noCook });
+  };
+
+  const handleNoCookToggle = () => {
+    const newNoCook = !noCook;
+    setNoCook(newNoCook);
+    onFilterChange?.({ budget, time, noCook: newNoCook });
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-sm p-6 mb-4">
       <h3 className="text-lg font-bold text-slate-800 mb-4">필터</h3>
@@ -26,7 +42,7 @@ export default function FilterSection({ onFilterChange }: FilterSectionProps) {
         </label>
         <select
           value={budget}
-          onChange={(e) => setBudget(Number(e.target.value))}
+          onChange={(e) => handleBudgetChange(Number(e.target.value))}
           className="w-full border border-slate-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value={5000}>5,000원 이하</option>
@@ -43,7 +59,7 @@ export default function FilterSection({ onFilterChange }: FilterSectionProps) {
         </label>
         <select
           value={time}
-          onChange={(e) => setTime(Number(e.target.value))}
+          onChange={(e) => handleTimeChange(Number(e.target.value))}
           className="w-full border border-slate-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value={0}>조리 불필요</option>
@@ -59,7 +75,7 @@ export default function FilterSection({ onFilterChange }: FilterSectionProps) {
           조리 없이 바로 먹기
         </label>
         <button
-          onClick={() => setNoCook(!noCook)}
+          onClick={handleNoCookToggle}
           className={`relative w-12 h-6 rounded-full transition-colors ${
             noCook ? 'bg-blue-600' : 'bg-slate-300'
           }`}
