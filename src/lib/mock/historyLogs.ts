@@ -1,0 +1,88 @@
+import { MealLog } from '@/types';
+
+export const historyLogs: MealLog[] = [
+  {
+    id: '1',
+    date: '2025-01-18',
+    time: '12:30',
+    name: '편의점 제육 도시락',
+    nutrition: {
+      calories: 780,
+      protein: 28,
+      carbs: 95,
+      fat: 22,
+    },
+    price: 5200,
+    microSuggestionApplied: true,
+  },
+  {
+    id: '2',
+    date: '2025-01-18',
+    time: '08:00',
+    name: '아메리카노 + 에그샌드위치',
+    nutrition: {
+      calories: 470,
+      protein: 17,
+      carbs: 42,
+      fat: 18,
+    },
+    price: 3300,
+    microSuggestionApplied: false,
+  },
+  {
+    id: '3',
+    date: '2025-01-17',
+    time: '19:00',
+    name: '치킨 샐러드',
+    nutrition: {
+      calories: 520,
+      protein: 35,
+      carbs: 38,
+      fat: 18,
+    },
+    price: 7200,
+    microSuggestionApplied: true,
+  },
+  {
+    id: '4',
+    date: '2025-01-17',
+    time: '12:00',
+    name: '김밥 + 우유',
+    nutrition: {
+      calories: 580,
+      protein: 22,
+      carbs: 78,
+      fat: 16,
+    },
+    price: 4500,
+    microSuggestionApplied: true,
+  },
+  {
+    id: '5',
+    date: '2025-01-17',
+    time: '07:30',
+    name: '그래놀라 + 요거트',
+    nutrition: {
+      calories: 350,
+      protein: 12,
+      carbs: 52,
+      fat: 8,
+    },
+    price: 3800,
+    microSuggestionApplied: false,
+  },
+  {
+    id: '6',
+    date: '2025-01-16',
+    time: '18:30',
+    name: '닭가슴살 덮밥',
+    nutrition: {
+      calories: 620,
+      protein: 40,
+      carbs: 72,
+      fat: 12,
+    },
+    price: 6500,
+    microSuggestionApplied: true,
+  },
+];
