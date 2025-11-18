@@ -1,13 +1,33 @@
+'use client';
+
+import { useLanguage } from '@/hooks/useLanguage';
+
+const messages = {
+  ko: {
+    heading: '식사 분석 중',
+    subtitle: '영양 정보와 가격을 분석하고 있어요',
+    loadingHint: '잠시만 기다려 주세요...',
+  },
+  en: {
+    heading: 'Analyzing your meal',
+    subtitle: 'Analyzing nutrition info and pricing',
+    loadingHint: 'Please wait a moment...',
+  },
+} as const;
+
 export default function AnalyzingState() {
+  const { language } = useLanguage();
+  const t = messages[language];
+
   return (
     <div className="space-y-6 px-2">
       {/* Header */}
       <div className="text-center pt-4">
         <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-2">
-          Analyzing your meal
+          {t.heading}
         </h2>
         <p className="text-sm text-slate-600 dark:text-slate-400">
-          영양 정보와 가격을 분석하고 있어요
+          {t.subtitle}
         </p>
       </div>
 
@@ -68,7 +88,7 @@ export default function AnalyzingState() {
       {/* Bottom hint */}
       <div className="text-center pt-2">
         <p className="text-xs text-slate-500 dark:text-slate-400">
-          잠시만 기다려 주세요...
+          {t.loadingHint}
         </p>
       </div>
     </div>
