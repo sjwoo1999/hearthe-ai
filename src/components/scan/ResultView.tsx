@@ -3,6 +3,8 @@
 import { ScanResult } from '@/types';
 import ComparisonCard from './ComparisonCard';
 import { useLanguage } from '@/hooks/useLanguage';
+import { getFoodName } from '@/lib/i18n/foodNames';
+import { getSuggestion, getImpact } from '@/lib/i18n/suggestions';
 
 interface ResultViewProps {
   result: ScanResult;
@@ -18,6 +20,7 @@ const messages = {
     carbs: '탄수화물',
     fat: '지방',
     priceLabel: '예상 가격',
+    currency: '원',
     microSuggestionsHeading: '💡 작은 변화 제안',
   },
   en: {
@@ -29,6 +32,7 @@ const messages = {
     carbs: 'Carbs',
     fat: 'Fat',
     priceLabel: 'Estimated price',
+    currency: '',
     microSuggestionsHeading: '💡 Small Change Suggestions',
   },
 } as const;
@@ -49,7 +53,9 @@ export default function ResultView({ result }: ResultViewProps) {
 
       {/* Food name */}
       <div className="bg-white dark:bg-slate-900/80 rounded-xl shadow-sm p-6">
-        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-1">{result.name}</h2>
+        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-1">
+          {result.nameKey ? getFoodName(result.nameKey, language) : result.name}
+        </h2>
         <p className="text-sm text-slate-500 dark:text-slate-400">{t.aiEstimation}</p>
       </div>
 
@@ -75,7 +81,7 @@ export default function ResultView({ result }: ResultViewProps) {
           </div>
         </div>
         <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
-          <p className="text-sm text-slate-600 dark:text-slate-400">{t.priceLabel}: <span className="font-bold text-slate-900 dark:text-slate-50">{result.price.toLocaleString()}원</span></p>
+          <p className="text-sm text-slate-600 dark:text-slate-400">{t.priceLabel}: <span className="font-bold text-slate-900 dark:text-slate-50">{result.price.toLocaleString()}{t.currency}</span></p>
         </div>
       </div>
 
@@ -90,8 +96,12 @@ export default function ResultView({ result }: ResultViewProps) {
             >
               <span className="text-lg">✨</span>
               <div className="flex-1">
-                <p className="text-sm font-medium text-slate-900 dark:text-slate-50">{suggestion.text}</p>
-                <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">{suggestion.impact}</p>
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-50">
+                  {suggestion.textKey ? getSuggestion(suggestion.textKey, language) : suggestion.text}
+                </p>
+                <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                  {suggestion.impactData ? getImpact(suggestion.impactData, language) : suggestion.impact}
+                </p>
               </div>
             </div>
           ))}
@@ -102,6 +112,7 @@ export default function ResultView({ result }: ResultViewProps) {
       <ComparisonCard
         current={{
           name: result.name,
+          nameKey: result.nameKey,
           nutrition: result.nutrition,
           price: result.price,
         }}

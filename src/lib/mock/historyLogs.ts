@@ -6,6 +6,7 @@ export const historyLogs: MealLog[] = [
     date: '2025-01-18',
     time: '12:30',
     name: '편의점 제육 도시락',
+    nameKey: 'convenience-pork-lunchbox',
     nutrition: {
       calories: 780,
       protein: 28,
@@ -20,6 +21,7 @@ export const historyLogs: MealLog[] = [
     date: '2025-01-18',
     time: '08:00',
     name: '아메리카노 + 에그샌드위치',
+    nameKey: 'americano-egg-sandwich',
     nutrition: {
       calories: 470,
       protein: 17,
@@ -34,6 +36,7 @@ export const historyLogs: MealLog[] = [
     date: '2025-01-17',
     time: '19:00',
     name: '치킨 샐러드',
+    nameKey: 'chicken-salad',
     nutrition: {
       calories: 520,
       protein: 35,
@@ -48,6 +51,7 @@ export const historyLogs: MealLog[] = [
     date: '2025-01-17',
     time: '12:00',
     name: '김밥 + 우유',
+    nameKey: 'kimbap-milk',
     nutrition: {
       calories: 580,
       protein: 22,
@@ -62,6 +66,7 @@ export const historyLogs: MealLog[] = [
     date: '2025-01-17',
     time: '07:30',
     name: '그래놀라 + 요거트',
+    nameKey: 'granola-yogurt',
     nutrition: {
       calories: 350,
       protein: 12,
@@ -76,6 +81,7 @@ export const historyLogs: MealLog[] = [
     date: '2025-01-16',
     time: '18:30',
     name: '닭가슴살 덮밥',
+    nameKey: 'chicken-rice-bowl',
     nutrition: {
       calories: 620,
       protein: 40,

@@ -2,6 +2,7 @@
 
 import { MealLog } from '@/types';
 import { useLanguage } from '@/hooks/useLanguage';
+import { getFoodName } from '@/lib/i18n/foodNames';
 
 interface RecentLogsProps {
   logs: MealLog[];
@@ -11,10 +12,12 @@ const messages = {
   ko: {
     heading: '최근 기록',
     protein: '단백질',
+    currency: '원',
   },
   en: {
     heading: 'Recent Logs',
     protein: 'Protein',
+    currency: '',
   },
 } as const;
 
@@ -34,7 +37,9 @@ export default function RecentLogs({ logs }: RecentLogsProps) {
           >
             <div className="flex justify-between items-start mb-2">
               <div>
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">{log.name}</h3>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  {log.nameKey ? getFoodName(log.nameKey, language) : log.name}
+                </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                   {log.date} {log.time}
                 </p>
@@ -48,7 +53,7 @@ export default function RecentLogs({ logs }: RecentLogsProps) {
             <div className="flex gap-4 text-xs text-slate-600 dark:text-slate-400">
               <span>{log.nutrition.calories} kcal</span>
               <span>{t.protein} {log.nutrition.protein}g</span>
-              <span>{log.price.toLocaleString()}원</span>
+              <span>{log.price.toLocaleString()}{t.currency}</span>
             </div>
           </div>
         ))}

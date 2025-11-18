@@ -2,10 +2,12 @@
 
 import { NutritionInfo, Alternative } from '@/types';
 import { useLanguage } from '@/hooks/useLanguage';
+import { getFoodName } from '@/lib/i18n/foodNames';
 
 interface ComparisonCardProps {
   current: {
     name: string;
+    nameKey?: string;
     nutrition: NutritionInfo;
     price: number;
   };
@@ -64,7 +66,9 @@ export default function ComparisonCard({ current, alternative }: ComparisonCardP
         {/* Current */}
         <div className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 bg-slate-50 dark:bg-slate-800/50">
           <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">{t.currentLabel}</p>
-          <h4 className="text-sm font-bold text-slate-900 dark:text-slate-50 mb-3">{current.name}</h4>
+          <h4 className="text-sm font-bold text-slate-900 dark:text-slate-50 mb-3">
+            {current.nameKey ? getFoodName(current.nameKey, language) : current.name}
+          </h4>
           <div className="grid grid-cols-3 gap-3 text-xs">
             <div>
               <p className="text-slate-500 dark:text-slate-400">{t.calories}</p>
@@ -84,7 +88,9 @@ export default function ComparisonCard({ current, alternative }: ComparisonCardP
         {/* Alternative */}
         <div className="border border-blue-200 dark:border-blue-800 rounded-lg p-4 bg-blue-50 dark:bg-blue-900/20">
           <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-2">{t.alternativeLabel}</p>
-          <h4 className="text-sm font-bold text-slate-900 dark:text-slate-50 mb-3">{alternative.name}</h4>
+          <h4 className="text-sm font-bold text-slate-900 dark:text-slate-50 mb-3">
+            {alternative.nameKey ? getFoodName(alternative.nameKey, language) : alternative.name}
+          </h4>
           <div className="grid grid-cols-3 gap-3 text-xs">
             <div>
               <p className="text-slate-500 dark:text-slate-400">{t.calories}</p>

@@ -11,6 +11,7 @@ export interface MealLog {
   date: string;
   time: string;
   name: string;
+  nameKey?: string; // Translation key for food name
   nutrition: NutritionInfo;
   price: number;
   imageUrl?: string;
@@ -35,11 +36,19 @@ export interface TodaySummary {
 export interface MicroSuggestion {
   id: string;
   text: string;
+  textKey?: string; // Translation key for suggestion text
   impact: string; // e.g., "-150 kcal", "+6g protein"
+  impactData?: {
+    calories?: number;
+    protein?: number;
+    carbs?: number;
+    price?: number;
+  };
 }
 
 export interface Alternative {
   name: string;
+  nameKey?: string; // Translation key for food name
   nutrition: NutritionInfo;
   price: number;
   prepTime: number; // minutes
@@ -47,6 +56,7 @@ export interface Alternative {
 
 export interface ScanResult {
   name: string;
+  nameKey?: string; // Translation key for food name
   nutrition: NutritionInfo;
   price: number;
   imageUrl?: string;
@@ -57,11 +67,17 @@ export interface ScanResult {
 export interface Recommendation {
   id: string;
   name: string;
+  nameKey?: string; // Translation key for food name
   nutrition: NutritionInfo;
   price: number;
   prepTime: number;
   tags: string[]; // e.g., ["no-cook", "high-protein"]
   tradeoff: string;
+  tradeoffData?: {
+    calories: number;
+    protein: number;
+    price: number;
+  };
 }
 
 export interface HistorySummary {

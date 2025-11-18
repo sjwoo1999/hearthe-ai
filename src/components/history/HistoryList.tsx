@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { MealLog } from '@/types';
 import { useLanguage } from '@/hooks/useLanguage';
+import { getFoodName } from '@/lib/i18n/foodNames';
 
 interface HistoryListProps {
   logs: MealLog[];
@@ -50,7 +51,9 @@ export default function HistoryList({ logs }: HistoryListProps) {
           {/* Header */}
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1">
-              <h3 className="text-base font-bold text-slate-900 dark:text-slate-50 mb-1">{log.name}</h3>
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-50 mb-1">
+                {log.nameKey ? getFoodName(log.nameKey, language) : log.name}
+              </h3>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 {log.date} · {log.time}
               </p>

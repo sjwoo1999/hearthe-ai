@@ -3,6 +3,9 @@
 import { useState } from 'react';
 import { Recommendation } from '@/types';
 import { useLanguage } from '@/hooks/useLanguage';
+import { getFoodName } from '@/lib/i18n/foodNames';
+import { getTagTranslation } from '@/lib/i18n/tags';
+import { getTradeoff } from '@/lib/i18n/tradeoffs';
 
 interface RecommendationListProps {
   recommendations: Recommendation[];
@@ -58,14 +61,16 @@ export default function RecommendationList({ recommendations }: RecommendationLi
           {/* Header */}
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1">
-              <h3 className="text-base font-bold text-slate-900 dark:text-slate-50 mb-1">{rec.name}</h3>
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-50 mb-1">
+                {rec.nameKey ? getFoodName(rec.nameKey, language) : rec.name}
+              </h3>
               <div className="flex gap-2 flex-wrap">
                 {rec.tags.map((tag) => (
                   <span
                     key={tag}
                     className="px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-xs rounded-full font-medium"
                   >
-                    {tag}
+                    {getTagTranslation(tag, language)}
                   </span>
                 ))}
               </div>
@@ -90,7 +95,11 @@ export default function RecommendationList({ recommendations }: RecommendationLi
 
           {/* Trade-off */}
           <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-lg p-3 mb-3">
-            <p className="text-xs font-medium text-blue-900 dark:text-blue-200">{rec.tradeoff}</p>
+            <p className="text-xs font-medium text-blue-900 dark:text-blue-200">
+              {rec.tradeoffData
+                ? getTradeoff(rec.tradeoffData.calories, rec.tradeoffData.protein, rec.tradeoffData.price, language)
+                : rec.tradeoff}
+            </p>
           </div>
 
           {/* Detail button */}
