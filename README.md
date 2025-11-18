@@ -49,9 +49,9 @@ Track your daily nutrition and budget at a glance.
   - Status indicators (여유/적정/주의)
   - Percentage tracking
 - **Quick Actions**
-  - Scan food photo
-  - Budget-based recommendations
-  - Quick meal suggestions
+  - Scan food photo → Navigate to `/scan`
+  - Budget-based recommendations → Navigate to `/recommend`
+  - View recent meal logs → Navigate to `/history`
 - **Recent Logs**
   - Recent meal history
   - Micro-suggestion applied indicators
@@ -77,14 +77,16 @@ Analyze your meal with AI-powered food recognition.
 ### ✨ Recommend (`/recommend`)
 Get personalized meal recommendations based on your constraints.
 
-- **Smart Filters**
-  - Budget range selector
-  - Preparation time filter
-  - No-cook toggle
+- **Smart Filters** (Real-time filtering)
+  - Budget range selector (5K-15K won)
+  - Preparation time filter (0-30 minutes)
+  - No-cook toggle (instant meals)
+  - Dynamic recommendation count
 - **Recommendation List**
   - Nutrition-optimized suggestions
   - Price and time indicators
   - Trade-off explanations
+  - Filtered results update instantly
 - **Detailed Comparison**
   - Expandable nutrition details
   - Side-by-side comparison
@@ -286,6 +288,10 @@ bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950
 - [x] Shimmer animations
 - [x] Dark mode support
 - [x] Mock data structure
+- [x] UX improvements (P1 critical fixes)
+  - Fixed QuickActions routing (distinct destinations)
+  - Connected FilterSection to real-time filtering
+  - Dynamic recommendation updates based on user preferences
 
 ### Upcoming Features ⏳
 
