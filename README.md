@@ -40,14 +40,12 @@ Hearthé AI provides:
 ## ✨ Features
 
 ### 🏠 Home (`/`)
-Track your daily nutrition and budget at a glance.
+Track your daily nutrition and budget at a glance with the **Daily Balance** card.
 
-- **Today's Summary Card**
-  - Calories progress (pastel orange gradient)
-  - Protein progress (pastel emerald gradient)
-  - Budget progress (pastel sky gradient)
-  - Status indicators (여유/적정/주의)
-  - Percentage tracking
+- **Daily Balance Card**
+  - **Remaining Budget**: Prominently displayed with a progress bar.
+  - **Nutrition Stats**: Calories and Protein progress in a clean, card-based layout.
+  - **Date Indicator**: Shows the current date with a nature-inspired badge.
 - **Quick Actions**
   - Scan food photo → Navigate to `/scan`
   - Budget-based recommendations → Navigate to `/recommend`
@@ -57,12 +55,11 @@ Track your daily nutrition and budget at a glance.
   - Micro-suggestion applied indicators
 
 ### 📷 Scan (`/scan`)
-Analyze your meal with AI-powered food recognition.
+Analyze your meal with a conversational AI experience.
 
-- **3-Stage UI Flow**
-  1. **Idle**: Camera preview with capture/gallery buttons
-  2. **Analyzing**: AI badge with ping animation + shimmer skeleton
-  3. **Result**: Detailed nutrition analysis
+- **Conversational UI**
+  - Friendly status messages (e.g., "Identifying ingredients...", "Calculating nutrition...")
+  - **Warm Glow Animation**: Pulsing "Hearth" colors replace static loading bars.
 - **Analysis Results**
   - Estimated food name
   - Nutrition breakdown (calories, protein, carbs, fat)
@@ -70,26 +67,18 @@ Analyze your meal with AI-powered food recognition.
 - **Micro-Suggestions**
   - Small, actionable improvements
   - Impact preview (e.g., "-150 kcal, -1500원")
-- **Comparison Card**
-  - Current meal vs. healthier alternative
-  - Trade-off analysis
 
 ### ✨ Recommend (`/recommend`)
-Get personalized meal recommendations based on your constraints.
+Get personalized meal recommendations with helpful insights.
 
 - **Smart Filters** (Real-time filtering)
   - Budget range selector (5K-15K won)
   - Preparation time filter (0-30 minutes)
   - No-cook toggle (instant meals)
-  - Dynamic recommendation count
-- **Recommendation List**
-  - Nutrition-optimized suggestions
-  - Price and time indicators
-  - Trade-off explanations
-  - Filtered results update instantly
-- **Detailed Comparison**
-  - Expandable nutrition details
-  - Side-by-side comparison
+- **Micro-Suggestion Cards**
+  - **Friendly Badges**: "💡 Suggestion" highlights trade-offs (e.g., "Save Money", "More Protein").
+  - **Organic Design**: Rounded cards with soft shadows.
+  - **Detailed Comparison**: Expandable nutrition details.
 
 ### 📊 History (`/history`)
 Review your eating patterns and progress.
@@ -113,11 +102,11 @@ Review your eating patterns and progress.
 - **Fonts**: Geist Sans, Geist Mono
 
 ### Design
-- **Design System**: Pastel tone palette
+- **Design System**: "Organic Warmth" (Hearth & Nature)
 - **Responsive**: Mobile-first (max-width: 28rem)
 - **Dark Mode**: Supported via Tailwind
 - **Icons**: Inline SVG (custom stroke icons)
-- **Animations**: Shimmer, ping, gradient transitions
+- **Animations**: Warm glow, shimmer, fade-in transitions
 
 ### Development
 - **Node.js**: >=20.9.0
@@ -152,26 +141,26 @@ Download Node.js 20.x LTS from [nodejs.org](https://nodejs.org/)
 
 ### Installation
 
-1. **Clone the repository**
-```bash
-git clone https://github.com/yourusername/hearthe-ai.git
-cd hearthe-ai
-```
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/yourusername/hearthe-ai.git
+    cd hearthe-ai
+    ```
 
-2. **Install dependencies**
-```bash
-npm install
-```
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-3. **Run development server**
-```bash
-npm run dev
-```
+3.  **Run development server**
+    ```bash
+    npm run dev
+    ```
 
-4. **Open your browser**
-```
-http://localhost:3000
-```
+4.  **Open your browser**
+    ```
+    http://localhost:3000
+    ```
 
 ### Available Scripts
 
@@ -236,48 +225,30 @@ hearthe-ai/
 
 ## 🎨 Design System
 
-### Color Palette (Pastel Tone)
+### "Organic Warmth" Palette
 
-- **Orange**: `from-orange-300 via-orange-400 to-orange-500`
-  - Used for: Calories progress, active tab indicator
-- **Emerald/Green**: `from-emerald-300 via-emerald-400 to-green-500`
-  - Used for: Protein progress, success states
-- **Sky/Blue**: `from-sky-300 via-sky-400 to-blue-500`
-  - Used for: Budget progress, info states
-- **Rose/Pink**: `from-rose-400 to-pink-500`
-  - Used for: AI badge, gradient backgrounds
-- **Slate**: Neutral colors for text and backgrounds
+The design system is inspired by Hestia (Hearth) and Demeter (Nature), focusing on warmth and comfort.
 
-### Typography
+- **Hearth (Primary)**: Warm Terracotta (`#D97757`)
+  - Used for: Main actions, budget progress, active states
+- **Nature (Secondary)**: Sage Green (`#8DA399`)
+  - Used for: Nutrition stats, success indicators, badges
+- **Cream (Background)**: Soft Beige (`#FDFBF7`)
+  - Used for: App background (replaces pure white for reduced eye strain)
+- **Stone (Neutral)**: Soft Charcoal (`#4A4543`)
+  - Used for: Text, borders, inactive states
 
-- **Primary Font**: Geist Sans
-- **Monospace Font**: Geist Mono
-- **Font Smoothing**: Antialiased
+### Typography & Shapes
 
-### Components
-
-- **Cards**: `rounded-2xl` with `shadow-sm` and subtle borders
-- **Progress Bars**: Gradient-filled with height `h-2.5`
-- **Buttons**: Minimum 44px touch target
-- **Icons**: Inline SVG with `stroke-width: 1.7`
+- **Font**: Geist Sans (Clean, modern sans-serif)
+- **Shapes**: `rounded-3xl` for all cards and buttons to mimic organic forms.
+- **Shadows**: `shadow-soft` for a diffused, gentle depth.
 
 ### Animations
 
-- **Shimmer**: Loading skeleton animation (1.4s ease-in-out)
-- **Ping**: Pulsing effect for AI badge
-- **Transitions**: Smooth color and size transitions (200-500ms)
-
-### Dark Mode
-
-Supports system preference with Tailwind's `dark:` variant.
-
-```css
-/* Light mode */
-bg-gradient-to-b from-orange-50 via-rose-50 to-sky-50
-
-/* Dark mode */
-bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950
-```
+- **Warm Glow**: Pulsing animation for the AI scanning state.
+- **Fade In**: Smooth entry for cards and details.
+- **Transitions**: Gentle color shifts (300ms).
 
 ## 🗺️ Roadmap
 
