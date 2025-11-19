@@ -2,7 +2,6 @@
 
 import { TodaySummary } from '@/types';
 import { useLanguage } from '@/hooks/useLanguage';
-import type { Language } from '@/contexts/LanguageContext';
 
 interface TodaySummaryCardProps {
   summary: TodaySummary;
@@ -10,202 +9,121 @@ interface TodaySummaryCardProps {
 
 const messages = {
   ko: {
-    ariaLabel: '오늘의 영양 및 예산 요약',
-    heading: '오늘의 요약',
-    calories: {
-      title: 'Calories',
-      description: '일일 칼로리 섭취량',
-    },
-    protein: {
-      title: 'Protein',
-      description: '일일 단백질 섭취량',
-    },
-    budget: {
-      title: 'Budget',
-      description: '오늘 사용한 식비',
-    },
+    ariaLabel: '일일 균형 및 예산 요약',
+    heading: '오늘의 균형',
+    remainingBudget: '남은 식비',
+    currency: '원',
+    calories: '칼로리',
+    protein: '단백질',
     status: {
-      budgetLow: '예산 여유',
-      budgetNormal: '예산 정상',
-      budgetHigh: '예산 경고',
-      low: '여유',
+      good: '여유',
       normal: '적정',
-      high: '주의',
+      warning: '주의',
     },
   },
   en: {
-    ariaLabel: "Today's nutrition and budget summary",
-    heading: "Today's Summary",
-    calories: {
-      title: 'Calories',
-      description: 'Daily calorie intake',
-    },
-    protein: {
-      title: 'Protein',
-      description: 'Daily protein intake',
-    },
-    budget: {
-      title: 'Budget',
-      description: "Today's meal budget",
-    },
+    ariaLabel: 'Daily balance and budget summary',
+    heading: 'Daily Balance',
+    remainingBudget: 'Remaining Budget',
+    currency: 'KRW',
+    calories: 'Calories',
+    protein: 'Protein',
     status: {
-      budgetLow: 'Budget Good',
-      budgetNormal: 'Budget Normal',
-      budgetHigh: 'Budget Alert',
-      low: 'Good',
+      good: 'Good',
       normal: 'Normal',
-      high: 'Caution',
+      warning: 'Warning',
     },
   },
 } as const;
 
-// Helper function to clamp ratio between 0 and 1
-const clampRatio = (current: number, target: number): number => {
-  const ratio = current / target;
-  return Math.max(0, Math.min(1, ratio));
-};
-
-// Helper function to get status text and color
-const getStatus = (
-  ratio: number,
-  type: 'calories' | 'protein' | 'budget',
-  language: Language
-): { text: string; color: string } => {
-  const t = messages[language].status;
-
-  if (type === 'budget') {
-    if (ratio < 0.5) return { text: t.budgetLow, color: 'text-emerald-600 dark:text-emerald-400' };
-    if (ratio < 0.85) return { text: t.budgetNormal, color: 'text-sky-600 dark:text-sky-400' };
-    return { text: t.budgetHigh, color: 'text-orange-600 dark:text-orange-400' };
-  }
-
-  if (ratio < 0.5) return { text: t.low, color: 'text-emerald-600 dark:text-emerald-400' };
-  if (ratio < 0.85) return { text: t.normal, color: 'text-sky-600 dark:text-sky-400' };
-  return { text: t.high, color: 'text-orange-600 dark:text-orange-400' };
-};
-
 export default function TodaySummaryCard({ summary }: TodaySummaryCardProps) {
   const { language } = useLanguage();
   const t = messages[language];
-  const caloriesRatio = clampRatio(summary.calories.current, summary.calories.target);
-  const proteinRatio = clampRatio(summary.protein.current, summary.protein.target);
-  const budgetRatio = clampRatio(summary.budget.current, summary.budget.target);
 
-  const caloriesPercent = Math.round(caloriesRatio * 100);
-  const proteinPercent = Math.round(proteinRatio * 100);
-  const budgetPercent = Math.round(budgetRatio * 100);
+  // Calculate remaining budget
+  const remainingBudget = Math.max(0, summary.budget.target - summary.budget.current);
+  const budgetProgress = Math.min(100, (summary.budget.current / summary.budget.target) * 100);
 
-  const caloriesStatus = getStatus(caloriesRatio, 'calories', language);
-  const proteinStatus = getStatus(proteinRatio, 'protein', language);
-  const budgetStatus = getStatus(budgetRatio, 'budget', language);
+  // Nutrition progress
+  const caloriesProgress = Math.min(100, (summary.calories.current / summary.calories.target) * 100);
+  const proteinProgress = Math.min(100, (summary.protein.current / summary.protein.target) * 100);
 
   return (
     <div
-      className="bg-white/90 dark:bg-slate-900/80 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-700/60 p-6 mb-4 backdrop-blur-sm"
+      className="bg-white rounded-3xl shadow-soft p-6 mb-6 border border-stone-100"
       aria-label={t.ariaLabel}
     >
-      <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-5">
-        {t.heading}
-      </h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-lg font-bold text-stone-800">
+          {t.heading}
+        </h2>
+        <span className="text-xs font-medium px-3 py-1 rounded-full bg-nature-100 text-nature-600">
+          {new Date().toLocaleDateString(language === 'ko' ? 'ko-KR' : 'en-US', { month: 'short', day: 'numeric' })}
+        </span>
+      </div>
 
-      {/* Calories */}
-      <div className="mb-5">
-        <div className="flex justify-between items-start mb-1.5">
-          <div>
-            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-              {t.calories.title}
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              {t.calories.description}
-            </p>
-          </div>
-          <div className="text-right">
-            <p className="text-sm font-bold text-slate-900 dark:text-slate-50">
-              {summary.calories.current.toLocaleString()} <span className="text-xs font-normal text-slate-600 dark:text-slate-400">/ {summary.calories.target.toLocaleString()} kcal</span>
-            </p>
-          </div>
+      {/* Main Focus: Remaining Budget */}
+      <div className="mb-8 text-center">
+        <p className="text-sm text-stone-600 mb-1">{t.remainingBudget}</p>
+        <div className="flex items-baseline justify-center gap-1">
+          <span className="text-4xl font-bold text-hearth-500">
+            {remainingBudget.toLocaleString()}
+          </span>
+          <span className="text-lg text-stone-500">{t.currency}</span>
         </div>
-        <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden mb-2">
+
+        {/* Budget Progress Bar */}
+        <div className="mt-4 w-full bg-stone-100 rounded-full h-3 overflow-hidden">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-orange-300 via-orange-400 to-orange-500 dark:from-orange-400 dark:via-orange-500 dark:to-orange-600 transition-all duration-500"
-            style={{ width: `${caloriesPercent}%` }}
+            className="h-full bg-hearth-500 rounded-full transition-all duration-1000 ease-out"
+            style={{ width: `${budgetProgress}%` }}
           />
         </div>
-        <div className="flex justify-between items-center">
-          <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
-            {caloriesPercent}%
-          </span>
-          <span className={`text-xs font-semibold ${caloriesStatus.color}`}>
-            {caloriesStatus.text}
-          </span>
+        <div className="flex justify-between mt-2 text-xs text-stone-500">
+          <span>0</span>
+          <span>{summary.budget.target.toLocaleString()}</span>
         </div>
       </div>
 
-      {/* Protein */}
-      <div className="mb-5">
-        <div className="flex justify-between items-start mb-1.5">
-          <div>
-            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-              {t.protein.title}
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              {t.protein.description}
-            </p>
+      {/* Secondary Stats: Nutrition */}
+      <div className="grid grid-cols-2 gap-4 pt-6 border-t border-stone-100">
+        {/* Calories */}
+        <div className="bg-cream rounded-2xl p-4">
+          <div className="flex justify-between items-start mb-2">
+            <span className="text-xs font-medium text-stone-600">{t.calories}</span>
+            <span className="text-xs font-bold text-nature-600">{Math.round(caloriesProgress)}%</span>
           </div>
-          <div className="text-right">
-            <p className="text-sm font-bold text-slate-900 dark:text-slate-50">
-              {summary.protein.current} <span className="text-xs font-normal text-slate-600 dark:text-slate-400">/ {summary.protein.target} g</span>
-            </p>
+          <div className="flex items-end gap-1 mb-2">
+            <span className="text-lg font-bold text-stone-800">{summary.calories.current}</span>
+            <span className="text-xs text-stone-500 mb-1">/ {summary.calories.target}</span>
+          </div>
+          <div className="w-full bg-white rounded-full h-1.5 overflow-hidden">
+            <div
+              className="h-full bg-nature-500 rounded-full"
+              style={{ width: `${caloriesProgress}%` }}
+            />
           </div>
         </div>
-        <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden mb-2">
-          <div
-            className="h-full rounded-full bg-gradient-to-r from-emerald-300 via-emerald-400 to-green-500 dark:from-emerald-400 dark:via-emerald-500 dark:to-green-600 transition-all duration-500"
-            style={{ width: `${proteinPercent}%` }}
-          />
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
-            {proteinPercent}%
-          </span>
-          <span className={`text-xs font-semibold ${proteinStatus.color}`}>
-            {proteinStatus.text}
-          </span>
-        </div>
-      </div>
 
-      {/* Budget */}
-      <div>
-        <div className="flex justify-between items-start mb-1.5">
-          <div>
-            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-              {t.budget.title}
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              {t.budget.description}
-            </p>
+        {/* Protein */}
+        <div className="bg-cream rounded-2xl p-4">
+          <div className="flex justify-between items-start mb-2">
+            <span className="text-xs font-medium text-stone-600">{t.protein}</span>
+            <span className="text-xs font-bold text-nature-600">{Math.round(proteinProgress)}%</span>
           </div>
-          <div className="text-right">
-            <p className="text-sm font-bold text-slate-900 dark:text-slate-50">
-              {summary.budget.current.toLocaleString()} <span className="text-xs font-normal text-slate-600 dark:text-slate-400">/ {summary.budget.target.toLocaleString()}원</span>
-            </p>
+          <div className="flex items-end gap-1 mb-2">
+            <span className="text-lg font-bold text-stone-800">{summary.protein.current}</span>
+            <span className="text-xs text-stone-500 mb-1">/ {summary.protein.target}g</span>
           </div>
-        </div>
-        <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden mb-2">
-          <div
-            className="h-full rounded-full bg-gradient-to-r from-sky-300 via-sky-400 to-blue-500 dark:from-sky-400 dark:via-sky-500 dark:to-blue-600 transition-all duration-500"
-            style={{ width: `${budgetPercent}%` }}
-          />
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
-            {budgetPercent}%
-          </span>
-          <span className={`text-xs font-semibold ${budgetStatus.color}`}>
-            {budgetStatus.text}
-          </span>
+          <div className="w-full bg-white rounded-full h-1.5 overflow-hidden">
+            <div
+              className="h-full bg-nature-500 rounded-full"
+              style={{ width: `${proteinProgress}%` }}
+            />
+          </div>
         </div>
       </div>
     </div>
   );
 }
+

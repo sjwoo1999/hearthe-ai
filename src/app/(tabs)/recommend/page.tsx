@@ -50,8 +50,8 @@ export default function RecommendPage() {
   return (
     <div className="px-4 py-6">
       <header className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">{t.heading}</h1>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.subtitle}</p>
+        <h1 className="text-2xl font-bold text-stone-800">{t.heading}</h1>
+        <p className="text-sm text-stone-600 mt-1">{t.subtitle}</p>
       </header>
 
       <FlowGuideBanner
@@ -65,7 +65,7 @@ export default function RecommendPage() {
       </div>
 
       <div className="mb-4">
-        <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-3">
+        <h2 className="text-lg font-bold text-stone-800 mb-3">
           {t.resultsCount(filteredRecommendations.length)}
         </h2>
       </div>

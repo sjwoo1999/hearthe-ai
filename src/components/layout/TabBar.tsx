@@ -16,7 +16,7 @@ const HomeIcon = ({ className }: { className?: string }) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.7"
+    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
@@ -32,7 +32,7 @@ const ScanIcon = ({ className }: { className?: string }) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.7"
+    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
@@ -48,7 +48,7 @@ const RecommendIcon = ({ className }: { className?: string }) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.7"
+    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
@@ -65,7 +65,7 @@ const HistoryIcon = ({ className }: { className?: string }) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.7"
+    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
@@ -76,10 +76,10 @@ const HistoryIcon = ({ className }: { className?: string }) => (
 );
 
 const tabs: Tab[] = [
-  { name: 'Home', path: '/', icon: <HomeIcon className="h-5 w-5" /> },
-  { name: 'Scan', path: '/scan', icon: <ScanIcon className="h-5 w-5" /> },
-  { name: 'Recommend', path: '/recommend', icon: <RecommendIcon className="h-5 w-5" /> },
-  { name: 'History', path: '/history', icon: <HistoryIcon className="h-5 w-5" /> },
+  { name: 'Home', path: '/', icon: <HomeIcon className="h-6 w-6" /> },
+  { name: 'Scan', path: '/scan', icon: <ScanIcon className="h-6 w-6" /> },
+  { name: 'Recommend', path: '/recommend', icon: <RecommendIcon className="h-6 w-6" /> },
+  { name: 'History', path: '/history', icon: <HistoryIcon className="h-6 w-6" /> },
 ];
 
 export default function TabBar() {
@@ -94,10 +94,10 @@ export default function TabBar() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-t border-slate-200/60 dark:border-slate-700/60 safe-area-bottom z-50"
+      className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-stone-100 safe-area-bottom z-50 shadow-[0_-4px_20px_-2px_rgba(0,0,0,0.03)]"
       aria-label="하단 내비게이션"
     >
-      <div className="max-w-md mx-auto flex justify-around items-center">
+      <div className="max-w-md mx-auto flex justify-around items-center px-2 pb-1 pt-2">
         {tabs.map((tab) => {
           const active = isActive(tab.path);
           return (
@@ -105,19 +105,19 @@ export default function TabBar() {
               key={tab.path}
               href={tab.path}
               className={`
-                flex flex-col items-center justify-center flex-1 py-2 px-3
-                min-h-[48px] transition-all duration-200
-                ${
-                  active
-                    ? 'bg-orange-50 dark:bg-orange-900/40 text-orange-700 dark:text-orange-200 border-t-2 border-orange-200/80 dark:border-orange-700/70 shadow-sm'
-                    : 'text-slate-500 dark:text-slate-400 border-t-2 border-transparent hover:text-slate-700 dark:hover:text-slate-300'
+                flex flex-col items-center justify-center flex-1 py-2 rounded-2xl transition-all duration-300
+                ${active
+                  ? 'text-hearth-600 bg-hearth-50 scale-105'
+                  : 'text-stone-400 hover:text-stone-600 hover:bg-stone-50'
                 }
               `}
               aria-label={`${tab.name} 탭으로 이동`}
               aria-current={active ? 'page' : undefined}
             >
               <span className="mb-1">{tab.icon}</span>
-              <span className="text-xs font-medium">{tab.name}</span>
+              <span className={`text-[10px] font-semibold ${active ? 'opacity-100' : 'opacity-0 hidden'}`}>
+                {tab.name}
+              </span>
             </Link>
           );
         })}

@@ -1,93 +1,82 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { getGuidance } from '@/lib/i18n/guidance';
 
 const messages = {
   ko: {
-    loadingHint: '잠시만 기다려 주세요...',
+    steps: [
+      '사진을 분석하고 있어요...',
+      '재료를 확인하는 중이에요...',
+      '영양 정보를 계산하고 있어요...',
+      '거의 다 됐어요!'
+    ],
   },
   en: {
-    loadingHint: 'Please wait a moment...',
+    steps: [
+      'Analyzing photo...',
+      'Identifying ingredients...',
+      'Calculating nutrition...',
+      'Almost there!'
+    ],
   },
 } as const;
 
 export default function AnalyzingState() {
   const { language } = useLanguage();
   const t = messages[language];
-  const guidance = getGuidance('scanAnalyzing', language);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentStep((prev) => (prev + 1) % t.steps.length);
+    }, 800); // Change text every 800ms
+
+    return () => clearInterval(interval);
+  }, [t.steps.length]);
 
   return (
-    <div className="space-y-6 px-2">
-      {/* Header */}
-      <div className="text-center pt-4">
-        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-2">
-          {guidance.title}
-        </h2>
-        <p className="text-sm text-slate-600 dark:text-slate-400">
-          {guidance.body}
-        </p>
-      </div>
+    <div className="flex flex-col items-center justify-center py-12 px-4">
+      {/* Warm Glow Animation */}
+      <div className="relative mb-10">
+        {/* Outer pulsing glow */}
+        <div className="absolute inset-0 rounded-full bg-hearth-500/20 animate-ping duration-1000" />
 
-      {/* AI Badge with ping animation */}
-      <div className="flex justify-center py-6">
-        <div className="relative">
-          {/* Ping animation ring */}
-          <span className="absolute inset-0 flex items-center justify-center">
-            <span className="h-20 w-20 rounded-full bg-orange-400/30 dark:bg-orange-500/30 animate-ping" />
-          </span>
-          {/* Static outer ring */}
-          <span className="absolute inset-0 flex items-center justify-center">
-            <span className="h-20 w-20 rounded-full bg-gradient-to-br from-orange-300 to-rose-400 dark:from-orange-400 dark:to-rose-500 opacity-20" />
-          </span>
-          {/* Inner badge */}
-          <div className="relative flex items-center justify-center h-16 w-16 rounded-full bg-gradient-to-br from-orange-400 via-rose-400 to-pink-500 dark:from-orange-500 dark:via-rose-500 dark:to-pink-600 shadow-lg">
-            <span className="text-white text-lg font-bold tracking-wide">AI</span>
-          </div>
+        {/* Middle glow */}
+        <div className="absolute inset-0 rounded-full bg-hearth-500/30 animate-pulse duration-2000" />
+
+        {/* Center Core */}
+        <div className="relative h-24 w-24 rounded-full bg-gradient-to-br from-hearth-500 to-hearth-600 shadow-soft flex items-center justify-center">
+          <svg
+            className="w-10 h-10 text-white animate-bounce"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+            />
+          </svg>
         </div>
       </div>
 
-      {/* Skeleton rows */}
-      <div className="space-y-4">
-        {/* Row 1 */}
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <div className="h-3 w-20 bg-slate-200 dark:bg-slate-700 rounded" />
-            <div className="h-3 w-24 bg-slate-200 dark:bg-slate-700 rounded" />
-          </div>
-          <div className="relative h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 dark:via-slate-600/40 to-transparent animate-[shimmer_1.4s_ease-in-out_infinite]" />
-          </div>
+      {/* Conversational Text */}
+      <div className="text-center space-y-2 h-16">
+        <h3 className="text-xl font-bold text-stone-800 transition-all duration-300 ease-in-out">
+          {t.steps[currentStep]}
+        </h3>
+        <div className="flex justify-center gap-1.5">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className={`h-2 w-2 rounded-full transition-colors duration-300 ${i === currentStep % 3 ? 'bg-hearth-500' : 'bg-stone-200'
+                }`}
+            />
+          ))}
         </div>
-
-        {/* Row 2 */}
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <div className="h-3 w-16 bg-slate-200 dark:bg-slate-700 rounded" />
-            <div className="h-3 w-20 bg-slate-200 dark:bg-slate-700 rounded" />
-          </div>
-          <div className="relative h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 dark:via-slate-600/40 to-transparent animate-[shimmer_1.4s_ease-in-out_infinite] [animation-delay:0.2s]" />
-          </div>
-        </div>
-
-        {/* Row 3 */}
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <div className="h-3 w-24 bg-slate-200 dark:bg-slate-700 rounded" />
-            <div className="h-3 w-28 bg-slate-200 dark:bg-slate-700 rounded" />
-          </div>
-          <div className="relative h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 dark:via-slate-600/40 to-transparent animate-[shimmer_1.4s_ease-in-out_infinite] [animation-delay:0.4s]" />
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom hint */}
-      <div className="text-center pt-2">
-        <p className="text-xs text-slate-500 dark:text-slate-400">
-          {t.loadingHint}
-        </p>
       </div>
     </div>
   );

@@ -28,8 +28,8 @@ export default function HomePage() {
   return (
     <div className="px-4 py-6">
       <header className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">{t.title}</h1>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{t.subtitle}</p>
+        <h1 className="text-2xl font-bold text-stone-800">{t.title}</h1>
+        <p className="text-sm text-stone-600 mt-1">{t.subtitle}</p>
       </header>
 
       <FlowGuideBanner

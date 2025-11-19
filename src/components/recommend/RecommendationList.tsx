@@ -26,6 +26,7 @@ const messages = {
     prepTimeMinutes: (minutes: number) => `${minutes}분`,
     estimatedPriceLabel: '예상 가격',
     currency: '원',
+    suggestion: '💡 제안',
   },
   en: {
     calories: 'Calories',
@@ -41,6 +42,7 @@ const messages = {
     prepTimeMinutes: (minutes: number) => `${minutes} min`,
     estimatedPriceLabel: 'Estimated Price',
     currency: '',
+    suggestion: '💡 Suggestion',
   },
 } as const;
 
@@ -49,26 +51,24 @@ export default function RecommendationList({ recommendations }: RecommendationLi
   const t = messages[language];
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const selectedRec = recommendations.find((r) => r.id === selectedId);
-
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {recommendations.map((rec) => (
         <div
           key={rec.id}
-          className="bg-white dark:bg-slate-900/80 rounded-xl shadow-sm p-5 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transition-colors"
+          className="bg-white rounded-3xl shadow-soft p-6 border border-stone-100 transition-all duration-300 hover:shadow-md"
         >
           {/* Header */}
-          <div className="flex items-start justify-between mb-3">
+          <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
-              <h3 className="text-base font-bold text-slate-900 dark:text-slate-50 mb-1">
+              <h3 className="text-lg font-bold text-stone-800 mb-2">
                 {rec.nameKey ? getFoodName(rec.nameKey, language) : rec.name}
               </h3>
               <div className="flex gap-2 flex-wrap">
                 {rec.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-xs rounded-full font-medium"
+                    className="px-3 py-1 bg-nature-100 text-nature-600 text-xs rounded-full font-medium"
                   >
                     {getTagTranslation(tag, language)}
                   </span>
@@ -77,59 +77,65 @@ export default function RecommendationList({ recommendations }: RecommendationLi
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-3 mb-3">
-            <div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">{t.calories}</p>
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">{rec.nutrition.calories} kcal</p>
-            </div>
-            <div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">{t.protein}</p>
-              <p className="text-sm font-semibold text-green-600 dark:text-green-400">{rec.nutrition.protein} g</p>
-            </div>
-            <div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">{t.price}</p>
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">{rec.price.toLocaleString()}{t.currency}</p>
+          {/* Trade-off / Micro-suggestion Badge */}
+          <div className="mb-5">
+            <div className="inline-flex items-start gap-2 bg-hearth-100 rounded-2xl p-3 pr-4">
+              <span className="text-xs font-bold text-hearth-600 mt-0.5">{t.suggestion}</span>
+              <p className="text-sm font-medium text-stone-700 leading-snug">
+                {rec.tradeoffData
+                  ? getTradeoff(rec.tradeoffData.calories, rec.tradeoffData.protein, rec.tradeoffData.price, language)
+                  : rec.tradeoff}
+              </p>
             </div>
           </div>
 
-          {/* Trade-off */}
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-lg p-3 mb-3">
-            <p className="text-xs font-medium text-blue-900 dark:text-blue-200">
-              {rec.tradeoffData
-                ? getTradeoff(rec.tradeoffData.calories, rec.tradeoffData.protein, rec.tradeoffData.price, language)
-                : rec.tradeoff}
-            </p>
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-4 mb-5 p-4 bg-cream rounded-2xl">
+            <div className="text-center">
+              <p className="text-xs text-stone-500 mb-1">{t.calories}</p>
+              <p className="text-sm font-bold text-stone-800">{rec.nutrition.calories} kcal</p>
+            </div>
+            <div className="text-center border-l border-stone-200">
+              <p className="text-xs text-stone-500 mb-1">{t.protein}</p>
+              <p className="text-sm font-bold text-nature-600">{rec.nutrition.protein} g</p>
+            </div>
+            <div className="text-center border-l border-stone-200">
+              <p className="text-xs text-stone-500 mb-1">{t.price}</p>
+              <p className="text-sm font-bold text-stone-800">{rec.price.toLocaleString()}{t.currency}</p>
+            </div>
           </div>
 
           {/* Detail button */}
           <button
             onClick={() => setSelectedId(selectedId === rec.id ? null : rec.id)}
-            className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg py-2 text-sm font-medium transition-colors"
+            className={`w-full rounded-2xl py-3 text-sm font-semibold transition-colors ${selectedId === rec.id
+                ? 'bg-stone-100 text-stone-600'
+                : 'bg-hearth-500 text-white hover:bg-hearth-600 shadow-soft'
+              }`}
           >
             {selectedId === rec.id ? t.closeButton : t.detailButton}
           </button>
 
           {/* Detail panel */}
           {selectedId === rec.id && (
-            <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
-              <h4 className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-3">{t.detailedNutritionHeading}</h4>
+            <div className="mt-5 pt-5 border-t border-stone-100 animate-in fade-in slide-in-from-top-2 duration-300">
+              <h4 className="text-sm font-bold text-stone-800 mb-4">{t.detailedNutritionHeading}</h4>
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <div className="border border-slate-200 dark:border-slate-700 rounded-lg p-3">
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">{t.carbs}</p>
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">{rec.nutrition.carbs} g</p>
+                <div className="bg-cream rounded-2xl p-4">
+                  <p className="text-xs text-stone-500 mb-1">{t.carbs}</p>
+                  <p className="font-bold text-stone-800">{rec.nutrition.carbs} g</p>
                 </div>
-                <div className="border border-slate-200 dark:border-slate-700 rounded-lg p-3">
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">{t.fat}</p>
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">{rec.nutrition.fat} g</p>
+                <div className="bg-cream rounded-2xl p-4">
+                  <p className="text-xs text-stone-500 mb-1">{t.fat}</p>
+                  <p className="font-bold text-stone-800">{rec.nutrition.fat} g</p>
                 </div>
-                <div className="border border-slate-200 dark:border-slate-700 rounded-lg p-3">
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">{t.prepTimeLabel}</p>
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">{rec.prepTime === 0 ? t.prepTimeNotRequired : t.prepTimeMinutes(rec.prepTime)}</p>
+                <div className="bg-cream rounded-2xl p-4">
+                  <p className="text-xs text-stone-500 mb-1">{t.prepTimeLabel}</p>
+                  <p className="font-bold text-stone-800">{rec.prepTime === 0 ? t.prepTimeNotRequired : t.prepTimeMinutes(rec.prepTime)}</p>
                 </div>
-                <div className="border border-slate-200 dark:border-slate-700 rounded-lg p-3">
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">{t.estimatedPriceLabel}</p>
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">{rec.price.toLocaleString()}{t.currency}</p>
+                <div className="bg-cream rounded-2xl p-4">
+                  <p className="text-xs text-stone-500 mb-1">{t.estimatedPriceLabel}</p>
+                  <p className="font-bold text-stone-800">{rec.price.toLocaleString()}{t.currency}</p>
                 </div>
               </div>
             </div>

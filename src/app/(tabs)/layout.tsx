@@ -10,7 +10,7 @@ export default function TabsLayout({
     <>
       <div className="max-w-md mx-auto">
         <header className="flex items-center justify-between px-4 py-3 mb-2">
-          <h1 className="text-sm font-semibold text-slate-800 dark:text-slate-100">
+          <h1 className="text-sm font-semibold text-stone-800">
             Hearthé AI
           </h1>
           <LanguageToggle />
